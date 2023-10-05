@@ -12,13 +12,19 @@ pluginManagement {
 }
 
 plugins {
-  id("com.gradle.enterprise") version "3.13.4"
+  id("com.gradle.enterprise") version "3.15"
+  id("com.gradle.common-custom-user-data-gradle-plugin") version "1.11.2"
 }
 
 gradleEnterprise {
+  server = "http://ec2-44-197-116-189.compute-1.amazonaws.com"
+  allowUntrustedServer = true // unless a trusted certificate is already
   buildScan {
-    termsOfServiceUrl = "https://gradle.com/terms-of-service"
-    termsOfServiceAgree = "yes"
+    publishAlways()
+    capture {
+      isTaskInputFiles = true
+    }
+    isUploadInBackground = System.getenv("CI") == null // adjust to your CI provider
   }
 }
 
